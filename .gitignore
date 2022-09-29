@@ -1,0 +1,9 @@
+# Addons
+*.ini
+
+# packages
+node_modules
+
+# settings
+.vscode
+.idea
