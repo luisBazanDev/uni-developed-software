@@ -11,7 +11,7 @@
    | Desde 5 años hasta menos de 10 años | 15% |
    | 10 años o más | 20% |
 4. Ingresar la cantidad de alumnos aprobados y desaprobados de un curso. Luego mostrar el porcentaje de estudiantes aprobados y el porcentaje de estudiantes desaprobados.
-5. Elaborar un algoritmo para el siguiente caso: una empresa de seguros asegura una casa ante desastres cobrando una prima anual de acuerdo con el valor de la casa. Para los primeros $25000 cobra el 3% del valor y para el valor restante 5%. Por ejemplo, si una casa está valorizada en $30000, cobrará 3% sobre los $25000 y 5% al resto, es decir 5% a $500. Haga un programa que muestre el monto que un cliente debe pagar por asegurar su casa. Descarte casas con valores superiores a los $100000.
+5. Elaborar un algoritmo para el siguiente caso: una empresa de seguros asegura una casa ante desastres cobrando una prima anual de acuerdo con el valor de la casa. Para los primeros $25000 cobra el 3% del valor y para el valor restante 5%. Por ejemplo, si una casa está valorizada en $30000, cobrará 3% sobre los $25000 y 5% al resto, es decir 5% a $5000. Haga un programa que muestre el monto que un cliente debe pagar por asegurar su casa. Descarte casas con valores superiores a los $100000.
 6. Escribir un programa que determine si un año es bisiesto. Un año es bisiesto si es múltiplo de 4 (por ejemplo 1984). Los años múltiplos de 100 no son bisiestos, salvo si ellos son también múltiplos de 400 (2000 es bisiesto, pero 1800 no lo es)
 
 ---
@@ -117,11 +117,44 @@ FinAlgoritmo
 # Ejercicio 5
 
 ```psc
+Algoritmo Ejer_5
+	Definir val, imp1, imp2 Como Real
 
+	Escribir "Ingresar valor de la casa: ($)"
+	Leer val
+
+	Escribir "Valor de la casa ------------------ $", val
+
+	Si val > 25000 Entonces
+		imp1 = 25000 * 0.3
+		imp2 = (val - 25000) * 0.5
+	SiNo
+		imp1 = val * 0.3
+	FinSi
+	Escribir "-----------------------------------"
+	Escribir "Importe por los primeros $25000 --- $", imp1
+	Escribir "Importe por el restante ----------- $", imp2
+	Escribir "Importe final total --------------- $", imp1 + imp2
+FinAlgoritmo
 ```
 
 # Ejercicio 6
 
 ```psc
+Algoritmo Ejer_6
+	Definir year Como Entero
 
+	Escribir "Ingresar año"
+	Leer year
+
+	Si year mod 400 == 0 Entonces
+		Escribir "El año ", year, " es biciesto"
+	SiNo
+		Si year mod 4 == 0 y year mod 100 <> 0 Entonces
+			Escribir "El año ", year, " es biciesto"
+		SiNo
+			Escribir "El año ", year, " no biciesto"
+		FinSi
+	FinSi
+FinAlgoritmo
 ```
