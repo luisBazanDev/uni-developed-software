@@ -12,7 +12,9 @@
    | 10 | Asia | 0.20 |
    | 15 | África | 0.39 |
    | 20 | Oceanía | 0.28 |
+
    Realice un programa que le permita calcular e imprimir el costo total de una llamada telefónica considerando tanto la zona como la duración de la llamada.
+
 4. Realizar un algoritmo que nos permita determinar si un alumno tiene una nota de 0, 1 y 2 necesita reforzamiento 3, 4, Desaprobado, 5,6, 7 Aprobado, 8, 9 Excelente y 10 es Becado. Emplear una estructura condicional múltiple.
 5. Realizar un algoritmo que permita representar los días de la semana correspondiente a los cuerpos celestes del Sistema solar, de tal forma que ingrese el nombre del día y el programa retorne el cuerpo celeste correspondiente según la siguiente tabla.
    | Día | Cuerpo celeste |
