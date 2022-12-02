@@ -1,3 +1,4 @@
+require("dotenv").config();
 const socketIO = require("socket.io");
 const { SerialPort } = require("serialport");
 const express = require("express");
@@ -5,7 +6,7 @@ const app = express();
 const server = require("http").createServer(app);
 const io = new socketIO.Server(server);
 const arduino = new SerialPort({
-  path: "COM3",
+  path: process.env.SERIAL_PORT,
   baudRate: 9600,
 });
 
