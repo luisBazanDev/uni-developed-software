@@ -11,6 +11,7 @@ boolean pium;
 
 void cmd_angle(MyCommandParser::Argument *args, char *response) {
   angle = args[0].asInt64;
+  angle = 180 - angle;
   if(angle < 0 || angle > 180) {
     strlcpy(response, "Error angle", MyCommandParser::MAX_RESPONSE_SIZE);
     return;
@@ -21,9 +22,9 @@ void cmd_angle(MyCommandParser::Argument *args, char *response) {
 
 void cmd_gun(MyCommandParser::Argument *args, char *response) {
   Serial.println("¡PIUM!");
-  servoGun.write(0);
-  delay(1500);
   servoGun.write(100);
+  delay(1500);
+  servoGun.write(0);
   strlcpy(response, "Reset servo, waiting a charge...", MyCommandParser::MAX_RESPONSE_SIZE);
 }
 
@@ -37,7 +38,8 @@ void setup() {
   
   servoGun.attach(8);
   servoAngle.attach(9);
-  servoGun.write(100);
+  servoGun.write(0);
+  servoAngle.write(180);
 }
 
 void loop() {
