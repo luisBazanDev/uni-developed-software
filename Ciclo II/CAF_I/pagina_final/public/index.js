@@ -3,8 +3,13 @@ function gun() {
   socket.emit("gun", {});
 }
 
+const speed = 62;
+const maxDistance = 100;
+const gravity = 9.8;
+
 function changeAngle(angle) {
-  drawTray(parseInt(angle));
+  resetCanvas();
+  if (parseInt(angle) != 0) drawTray(parseInt(angle));
   socket.emit("angle", { angle });
 }
 
@@ -30,21 +35,37 @@ function resetCanvas() {
 }
 
 function drawTray(angle) {
-  ctx.fillStyle = "#0f0";
-  for (let i = 0; i <= 450; i++) {
-    ctx.fillRect(i + 40, calculeY(i), 6, 6);
-  }
+  const speedX = speed * Math.cos((angle * Math.PI) / 180);
+  const speedY = speed * Math.sin((angle * Math.PI) / 180);
+
+  const time = (speedY ^ 2) / (2 * gravity);
+  const height = 0.5 * gravity * (time ^ 2);
+  const distance = time * speedX;
+
+  console.log(speed, angle, speedX, speedY);
+  console.log(time, height, distance);
+  ctx.beginPath();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "#000000";
+  ctx.moveTo(50, 350);
+  ctx.bezierCurveTo(
+    calculateX(distance / 2),
+    0,
+    calculateX(distance),
+    350 - height,
+    calculateX(distance),
+    350
+  );
+  ctx.stroke();
 }
 
-function calculeY(x) {
-  const a = 1 / 5;
-  const b = 0;
-  const c = 0;
-  return a * (x ^ 2) + b * x + c;
+function calculateX(dist) {
+  const prop = dist / maxDistance;
+  return prop * 400 + 50;
 }
 
 resetCanvas();
-drawTray(angle);
+drawTray(45);
 
 document.getElementById("angle").addEventListener("change", (event) => {
   changeAngle(event.target.value);
