@@ -1,0 +1,46 @@
+{
+  "emojis": {
+    "ethereum": "<:ethereum:1050903816666624030>"
+  },
+  "terms": [
+    "capybara in the galaxy"
+  ],
+  "channels": {
+    "welcome": "1050882848351072398"
+  },
+  "presets": [
+    {
+      "type": "includes",
+      "terms": [
+        "hola",
+        "buenas",
+        "hello",
+        "hi"
+      ],
+      "resp": [
+        {
+          "type": "text-reply",
+          "text": "¡Hola!, soy <@1050867179173711973> un ChatBot para ayudar a los clientes de Capybara Store"
+        },
+        {
+          "type": "text-reply",
+          "text": "¡Hola!, en que puedo servirte?"
+        }
+      ]
+    },
+    {
+      "type": "includes",
+      "terms": [
+        "me recomiendas algo?",
+        "me puedes recomendar algo?",
+        "recomiendame algo",
+        "alguien me recomienda algo?"
+      ],
+      "resp": [
+        {
+          "type": "recomendacion"
+        }
+      ]
+    }
+  ]
+}
