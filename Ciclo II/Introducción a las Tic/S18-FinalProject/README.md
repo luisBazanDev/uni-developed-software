@@ -15,4 +15,4 @@ This is a discord bot developed by some university students as a final project f
 4. Set the bot token in the .env file
 5. `npm start` - Run bot!
 
-## Licence <a href="./LICENSE.md">MIT</a>
+## Licence <a href="./LICENSE">MIT</a>
