@@ -1,15 +1,3 @@
-# Addons
-*.ini
-
-# packages
-node_modules
-
-# settings
-.vscode
-.idea
-.env
-
-# intellj
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
