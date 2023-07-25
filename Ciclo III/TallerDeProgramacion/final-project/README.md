@@ -1,0 +1,33 @@
+# StartUp
+- Java 19
+- Ejecutar la clase principal AuthMain, dentro del modulo AuthModule
+
+# TO DO'S
+- [X] Corrección de tipo de edad y no tipo de dengue
+- Sistema de logs "auditoria.log"
+  - [X] LogsManager en ProviderModule
+  - Cada log debe tener fecha, hora del error
+  - Nombre del usuario esto se obtine con `UserProvider.getUsername()`
+  - Tipo de error // talvez con el LogsManager se pueden poner distintos metodos que formateen con un nombre `[12:40:20 02/06/2023] [Error LEVE/MEDIO/GRAVE por Luis] \n ERROR AQUI`
+  - Mensaje de error
+- Una mejor forma de manejar los archivos
+  - [X] Mejor manejo de la ruta del csv para que sea compatible con el sistema  de archivos de linux
+  - [X] Mejor manejo de la ruta de accounts.txt para que sea compatible con el sistema de archivos de linux
+- AuthModule
+  - [X] Implementar el sistema de logs
+- MainModule
+  - [X] Implementar el sistema de logs
+- Module1
+  - [X] Implementar el sistema de logs
+- Module2
+  - [X] Implementar la logica para imprimir en pantalla la informacion estadistica
+  - [X] Implementar la logica para exportar a un archivo la informacion estadistica
+  - [X] Implementar el sistema de logs
+- Module3
+  - [X] Implementar la logica para imprimir en pantalla la informacion estadistica
+  - [X] Implementar la logica para exportar a un archivo la informacion estadistica
+  - [X] Implementar el sistema de logs
+- Module4
+  - [X] Implementar la logica para imprimir en pantalla la informacion estadistica
+  - [X] Implementar la logica para exportar a un archivo la informacion estadistica
+  - [X] Implementar el sistema de logs
