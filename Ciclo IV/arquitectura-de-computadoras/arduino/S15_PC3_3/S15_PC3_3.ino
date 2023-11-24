@@ -1,6 +1,6 @@
-int RED = 12;
-int GREEN = 14;
-int BLUE = 27;
+int RED = 6;
+int GREEN = 10;
+int BLUE = 9;
 
 bool invertColor = true;
 
@@ -8,7 +8,7 @@ void setup() {
   pinMode(RED, OUTPUT);
   pinMode(GREEN, OUTPUT);
   pinMode(BLUE, OUTPUT);
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 void digitalLed(int LED, int value) {
@@ -34,23 +34,15 @@ void color(int red_v, int green_v, int blue_v) {
 }
 
 void loop() {
-  while(Serial.available() > 0) {
-    int red = Serial.parseInt();;
-    int green = Serial.parseInt();;
-    int blue = Serial.parseInt();;
-
-    if(Serial.read() == '\n') {
-      color(
-        constrain(red, 0, 255),
-        constrain(green, 0, 255),
-        constrain(blue, 0, 255)
-      );
-      Serial.print("Color parser #");
-      Serial.print(red, HEX);
-      Serial.print(green, HEX);
-      Serial.print(blue, HEX);
-      Serial.println();
-      delay(100);
-    }
-  }
+  color(0,0,0);
+  digitalLed(RED, 1);
+  delay(1000);
+  color(0,0,0);
+  digitalLed(BLUE, 1);
+  delay(1000);
+  color(0,0,0);
+  digitalLed(GREEN, 1);
+  delay(1000);
+  color(255, 255, 255);
+  delay(1000);
 }
