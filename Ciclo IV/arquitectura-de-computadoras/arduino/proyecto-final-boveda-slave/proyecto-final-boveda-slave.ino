@@ -20,13 +20,16 @@ byte colPin[cols] = {8,9,10,11};
 
 // Program variables
 char password[4] = {'1', '2', '3', '4'};
-char temppass[4] = {};
-int index = 0;
+char temppass[4] = {'0', '0', '0', '0'};
+int indexPass = 0;
 int i = 0;
-bool access = false;
+bool accessVault = false;
+bool lockedState = false;
+int maxTimeToChangePassword = 30; // seconds
+long passchangeLimit = 0;
 
 // Master serial
-SoftwareSerial master(22,24);
+SoftwareSerial master(2,3);
 
 // Object Keypad
 Keypad keypad = Keypad(makeKeymap(keys), rowPin, colPin, rows, cols);
@@ -36,9 +39,9 @@ void setup() {
   Serial.begin(9600);
   
   // Master serial
-  Serial3.begin(9600);
+  master.begin(9600);
   delay(100);
-  Serial3.println("S"); // Syncronize access status
+  master.println("S"); // Syncronize access status
 }
 
 bool comparePassword(char pass1[4], char pass2[4]) {
@@ -55,8 +58,8 @@ void masterLogic() {
   char symbol;
 
   // read rawCmd
-  while(Serial3.available()) {
-    rawCmd = Serial3.readString();
+  while(master.available()) {
+    rawCmd = master.readString();
   }
 
   if(rawCmd.equals("")) return;
@@ -70,9 +73,18 @@ void checkCmd(char cmd, String rawCmd) {
   switch (cmd) {
     case 'S':
       if(rawCmd[2] == '1') {
-        access = true;
+        accessVault = true;
+        Serial.println("Access");
       } else {
-        access = false;
+        accessVault = false;
+        Serial.println("Deny");
+      }
+      if(rawCmd[4] == '1') {
+        lockedState = true;
+        Serial.println("Locked");
+      } else {
+        lockedState = false;
+        Serial.println("Unlocked");
       }
       break;
   }
@@ -80,41 +92,70 @@ void checkCmd(char cmd, String rawCmd) {
 
 void keypadLogic() {
   char keypressed = keypad.getKey();
-  if (keypressed != NO_KEY){
-    Serial3.println("K");
 
-    if(access) {
+  if(lockedState && millis() > passchangeLimit) {
+    // Timeout
+    master.println("U");
+    indexPass = 0;
+    return;
+  }
+
+  if (keypressed != NO_KEY){
+    master.println("K");
+
+    if(lockedState) {
+      temppass[indexPass] = keypressed;
+      indexPass++;
+      if(indexPass == 4) {
+        indexPass = 0;
+        for(i = 0; i < 4; i++) {
+          password[i] = temppass[i];
+        }
+        
+        Serial.println("New password");
+        master.println("P");
+      }
+      return;
+    }
+    
+    if(accessVault) {
       // If loged user
       switch(keypressed) {
         case '*':
           // Logout logic
-          Serial3.println("D");
+          master.println("D");
+          break;
+        case '#':
+          // Change password logic
+          indexPass = 0;
+          passchangeLimit = millis() + (maxTimeToChangePassword * 1000);
+          master.println("B");
           break;
       }
       return;
     }
 
     // Password logic
-    if(index == 0) {
+    if(indexPass == 0) {
       Serial.println("Current password:");
     }
 
     // Print password
     Serial.print(keypressed);
-    temppass[index] = keypressed;
-    index++;
+    temppass[indexPass] = keypressed;
+    indexPass++;
     
     // Complete password
-    if(index == 4) {
-      index = 0;
+    if(indexPass == 4) {
+      indexPass = 0;
       Serial.println();
       // Check passwords
       if(comparePassword(password, temppass)) {
         // Access
-        Serial3.println("A");
+        master.println("A");
       } else {
         // Don't access
-        Serial3.println("E");
+        master.println("E");
       }
     }
   }
@@ -123,10 +164,4 @@ void keypadLogic() {
 void loop() {
   masterLogic();
   keypadLogic();
-
-  // Test
-  if(Serial.available()) {
-    char a = Serial.read();
-    Serial3.print(a);
-  }
 }
