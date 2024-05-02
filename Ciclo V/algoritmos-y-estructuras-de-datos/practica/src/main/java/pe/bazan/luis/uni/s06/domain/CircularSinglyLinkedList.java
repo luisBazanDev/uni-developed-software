@@ -12,14 +12,7 @@ public class CircularSinglyLinkedList<T> {
 	}
 
 	public void add(T data) {
-		// It's first node
-		if(this.size == 0) {
-			initNodes(data);
-			return;
-		} else {
-			// It's other node
-			addLast(data);
-		}
+		addLast(data);
 	}
 
 	public void add(int index, T data) {
