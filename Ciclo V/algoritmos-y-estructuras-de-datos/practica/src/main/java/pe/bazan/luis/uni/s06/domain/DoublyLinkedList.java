@@ -52,22 +52,66 @@ public class DoublyLinkedList<T> {
 			addFirst(data);
 			return;
 		}
+
+		if (index == this.size) {
+			addLast(data);
+			return;
+		}
+
 		if(this.size == 0 || index >= this.size) throw new ArrayIndexOutOfBoundsException();
 
-		DoubleNode newNode = new DoubleNode(data);
+		DoubleNode<T> newNode = new DoubleNode<T>(data);
 		int counter = 0;
 		DoubleNode<T> pointer = head;
-		while (counter <= index) {
+		while (counter < index) {
 			if(counter < index - 1) {
 				pointer = pointer.getNext();
 				counter++;
 			} else {
+				newNode.setPrev(pointer.getPrev());
 				newNode.setNext(pointer);
-				newNode.setPrev(newNode.getPrev());
 				pointer.setPrev(newNode);
 				this.size++;
 				break;
 			}
 		}
+	}
+
+	public T get(int index) {
+		int counter = 0;
+		DoubleNode<T> pointer;
+		if (index < Math.floorDiv(this.size, 2)) {
+			// Start from head
+			pointer = this.head;
+			while (counter < index) {
+				pointer = pointer.getNext();
+				counter++;
+			}
+			return pointer.getData();
+		} else {
+			// Start from end
+			pointer = this.end;
+			while (counter < size - index - 1) {
+				pointer = pointer.getPrev();
+				counter++;
+			}
+			return pointer.getData();
+		}
+	}
+
+	public int size() {
+		return this.size;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+
+		for (int i = 0; i < this.size; i++) {
+			stringBuilder.append(get(i).toString());
+			if(size - 1 != i ) stringBuilder.append("\n");
+		}
+
+		return stringBuilder.toString();
 	}
 }

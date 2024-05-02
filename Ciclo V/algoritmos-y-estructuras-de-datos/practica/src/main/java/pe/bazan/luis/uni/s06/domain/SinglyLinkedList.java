@@ -76,21 +76,6 @@ public class SinglyLinkedList<T> {
 		}
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder stringBuilder = new StringBuilder(head.getData().toString());
-
-		SimpleNode<T> pointer = head;
-
-		for (int i = 0; i < this.size - 1; i++) {
-			stringBuilder.append("\n");
-			stringBuilder.append(pointer.getNextNode().getData().toString());
-			pointer = pointer.getNextNode();
-		}
-
-		return stringBuilder.toString();
-	}
-
 	public T get(int index) {
 		if(index >= this.size) throw new ArrayIndexOutOfBoundsException();
 
@@ -105,5 +90,17 @@ public class SinglyLinkedList<T> {
 
 	public int size() {
 		return size;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+
+		for (int i = 0; i < this.size; i++) {
+			stringBuilder.append(get(i).toString());
+			if(size - 1 != i ) stringBuilder.append("\n");
+		}
+
+		return stringBuilder.toString();
 	}
 }
