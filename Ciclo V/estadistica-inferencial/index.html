@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="container mx-auto">
+      <div class="flex flex-col justify-center items-center" id="import">
+        <div>
+          <input
+            id="fileInput"
+            type="file"
+            accept=".json"
+            class="border border-gray-300 rounded p-2"
+          />
+        </div>
+        <button
+          onclick="importJSON()"
+          class="bg-green-400 p-3 border active:bg-green-300"
+        >
+          Importar JSON
+        </button>
+      </div>
+      <div id="app" class="flex flex-col hidden">
+        <div id="emoji" class="flex flex-col items-center">
+          <div class="text-2xl">Name of the emoji</div>
+          <div class="w-48 border border-black">
+            <img
+              src="http://cdn.7tv.app/emote/6127468124394d3edee3b9d5/4x.webp"
+              alt=""
+            />
+          </div>
+          <div class="flex gap-3">
+            <div
+              class="bg-gray-300 p-3 cursor-pointer active:bg-gray-500 hover:bg-gray-400"
+              onclick='next("Expresión")'
+            >
+              Expresión
+            </div>
+            <div
+              class="bg-gray-300 p-3 cursor-pointer active:bg-gray-500 hover:bg-gray-400"
+              onclick='next("Referencia-Interna")'
+            >
+              Referencia a chiste interno
+            </div>
+            <div
+              class="bg-gray-300 p-3 cursor-pointer active:bg-gray-500 hover:bg-gray-400"
+              onclick='next("Aleatorio")'
+            >
+              Aleatorio
+            </div>
+            <div
+              class="bg-gray-300 p-3 cursor-pointer active:bg-gray-500 hover:bg-gray-400"
+              onclick='next("Meme")'
+            >
+              Meme
+            </div>
+          </div>
+        </div>
+        <button onclick="exportJSON()" class="bg-blue-500 p-3 mt-16">
+          Exportar JSON
+        </button>
+      </div>
+    </div>
+
+    <script>
+      var jsonData = null;
+      var index = 0;
+      function importJSON() {
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+
+        if (!file) {
+          alert("Selecciona un archivo JSON");
+          return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          jsonData = JSON.parse(event.target.result);
+          console.log("JSON importado:", jsonData);
+          document.getElementById("import").classList.add("hidden");
+          document.getElementById("app").classList.remove("hidden");
+          setData(jsonData[index]);
+          // Aquí puedes hacer lo que quieras con el objeto JSON importado
+        };
+
+        reader.readAsText(file);
+      }
+
+      function exportJSON() {
+        const fileName = "datos.json";
+        const jsonStr = JSON.stringify(jsonData);
+        const blob = new Blob([jsonStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+
+        setTimeout(function () {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        }, 0);
+      }
+
+      function setData(emoji) {
+        document.getElementById("emoji").innerHTML = `
+          <div class="text-2xl">${emoji.word}</div>
+          <div class="w-96 h-96 border border-black flex justify-center">
+            <img
+              src="${emoji.files.x4}"
+              alt=""
+            />
+          </div>
+          <div class="flex gap-3">
+            <div
+              class="bg-gray-300 p-3 cursor-pointer active:bg-gray-500 hover:bg-gray-400 select-none"
+              onclick='next("Expresión")'
+            >
+              Expresión
+            </div>
+            <div
+              class="bg-gray-300 p-3 cursor-pointer active:bg-gray-500 hover:bg-gray-400 select-none"
+              onclick='next("Referencia-Interna")'
+            >
+              Referencia a chiste interno
+            </div>
+            <div
+              class="bg-gray-300 p-3 cursor-pointer active:bg-gray-500 hover:bg-gray-400 select-none"
+              onclick='next("Aleatorio")'
+            >
+              Aleatorio
+            </div>
+            <div
+              class="bg-gray-300 p-3 cursor-pointer active:bg-gray-500 hover:bg-gray-400 select-none"
+              onclick='next("Meme")'
+            >
+              Meme
+            </div>
+            <div
+              class="bg-gray-300 p-3 cursor-pointer active:bg-gray-500 hover:bg-gray-400 select-none"
+              onclick='next("Otra")'
+            >
+            Otra
+            </div>
+            <div
+              class="bg-gray-300 p-3 cursor-pointer active:bg-gray-500 hover:bg-gray-400 select-none"
+              onclick='next("Descartar")'
+            >
+            Descartar
+            </div>
+          </div>
+          `;
+      }
+
+      function next(value) {
+        jsonData[index].emotion = value;
+        if (index < jsonData.length - 1) {
+          index++;
+          setData(jsonData[index]);
+        }
+      }
+    </script>
+  </body>
+</html>
